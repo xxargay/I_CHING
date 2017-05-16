@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<script src="js/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="txt/estils.css">
+	<style>
+
+		*{margin:0 ; padding:0 ; box-sizing:border-box ; font-family:verdana ; }
+		html{width:100% ; height:100% ; }
+		body{width:100% ; height:100% ; margin:auto ; overflow:hidden ; background-color:#D7E9F4 ; font-size: 12px;}
+
+		#info{position:absolute ; top:0 ; height:10% ; width:100% ;   cursor:pointer ; text-align:center  ; /*background-color:#C3D5E0*/ }
+		#boto{position:absolute ; bottom:0 ; height:10% ; width:100% ;  cursor:pointer ; text-align:center ; /*background-color:#C3D5E0*/ }
+		
+		#clic{height:100% ; width:33.33%; margin:auto ; padding-top:15px ; border-top-left-radius: 10px; border-top-right-radius: 10px; color:#588DAD ; background-color:#A3B5C0 ;  background: linear-gradient( #A3B5C0 , #D7E9F4);}
+		
+		#cont{position:absolute ; z-index:10 ; top:10% ; height:80% ; width:100% ; padding:4% ;  }		
+		#cont2{position:absolute ; z-index:10 ; top:10% ; height:80% ; width:100% ; padding:8% ; background-color:#D7E9F4 ; display:none; }
+		#cont3{position:absolute ; z-index:10 ; top:10% ; height:80% ; width:100% ; padding:8% ; background-color:#D7E9F4 ; display:none; }
+		
+		.linia{height:10% ; width:100% ; margin-top: 3% ;}
+
+		.fosc{background-color:#9BC7D0 ;display:block ;float:left ;  }
+		.clar{display:block ;float:left ;  }
+		.linmut{background-color:#FBB9AB ;display:block ;float:left ; }
+		
+		.l{width:40% ;height:100% ;}
+		.c{width:20% ;height:100% ;}
+		
+		h1 {color:#139DB4;font-size:14px;margin-bottom:16px;}
+
+		h2 {font-size:12px;}
+		
+		#infoH, #h1, #h2 {font-size:14px; font-size:3vw; color:#588DAD}
+		
+		a {text-decoration: none ; color:#338DAD ; font-variant : bold ;}
+
+	</style>
+	<script>
+
+	$(function() { //////////////////////////////////////////////////
+	
+	
+	$("#h1").click(function(){
+		$("#cont2").toggle();
+		$("#cont3").hide();
+	});
+	
+	$("#h2").click(function(){
+		$("#cont3").toggle();
+		$("#cont2").hide();
+	});
+	
+	$("#infoH").click(function(){
+		$("#cont2").hide();
+		$("#cont3").hide();
+	});
+	
+	
+	count  = 0 ;
+	count0 = 0 ;
+	count1 = 0 ;
+	
+	m6 = "<span class='linmut l'></span><span class='clar c'></span><span class='linmut l'></span>" ;
+	t7 = "<span class='fosc l'></span><span class='fosc c'></span><span class='fosc l'></span>" ;
+	t8 = "<span class='fosc l'></span><span class='clar c'></span><span class='fosc l'></span>" ;
+	m9 = "<span class='linmut l'></span><span class='linmut c'></span><span class='linmut l'></span>" ;
+	
+	hex = [] ;
+	hex2 = [] ;
+	
+	hexagrama = 0;
+	hexagrama2 = 0;
+	
+	// tirem les monedes 6 cops
+	linies = function (){
+	
+		if(count<=5){
+			count++
+			linia(count) ;
+		}	
+
+		if(count == 6){
+			trigrames() ;
+			hexa1 = hexagrama ;
+			trigrames2() ;
+			hexa2 = hexagrama ;
+			
+			// carreguem el contingut dels hexagrames
+
+			$("#cont2").load("txt/" + hexa1 + ".html");
+			
+			$("#h1").html("<a href='#'>" + hexa1 + "</a>");
+			$("#h2").html("");
+			
+			if(hexa1 !== hexa2){
+				$("#cont3").load("txt/" + hexa2 + ".html");
+			
+				$("#h2").html(" | <a href='#'>" + hexa2 + "</a>");
+			}
+			
+			
+			
+			
+			
+			
+		}	
+		
+	}
+	
+
+	
+	linia = function (n){
+	
+		var lin = "linia" + n ;
+		
+		// el resultat de la suma a y
+		var y = 0 ;
+		
+		// per cada linia calculem les tres monedes
+		for(i=0 ;i<3 ;i++){
+			
+			// nombre aleatori entre 2 i 3
+			var x = Math.floor((Math.random() * 2)+2) ;
+			
+			// sumem el valor de les tres monedes
+			y = y + x ;
+
+		}
+		
+		var yy = "" ;
+		
+		// pintem el valor de la moneda
+		switch(y){
+			case 6:
+				yy = m6 ;
+				hex.push(0);
+				hex2.push(1);
+				break ;
+			case 7:
+				yy = t7 ;
+				hex.push(1);
+				hex2.push(1);
+				break ;
+			case 8:
+				yy = t8 ;
+				hex.push(0);
+				hex2.push(0);
+				break ;
+			case 9:
+				yy = m9 ;
+				hex.push(1);
+				hex2.push(0);
+		}
+		
+		$("#" + lin).html(yy) ;
+		
+	}
+
+	
+	
+	trigrames = function (){
+
+		var tri0 = "" + hex[0] + hex[1] + hex[2] ;
+		var tri1 = "" + hex[3] + hex[4] + hex[5] ;
+		
+		var a = tri0 ;
+		var b = tri1 ;
+		
+		hexa(a,b)
+	}
+	
+	
+	
+	trigrames2 = function (){
+
+		var tri0 = "" + hex2[0] + hex2[1] + hex2[2] ;
+		var tri1 = "" + hex2[3] + hex2[4] + hex2[5] ;
+		
+		var a = tri0 ;
+		var b = tri1 ;
+		
+		hexa(a,b) ;
+
+	}
+
+	
+	
+	hexa = function (a,b){
+		if (a == '000' && b == '000')	{ hexagrama = 2 }
+		if (a == '000' && b == '001')	{ hexagrama = 23}
+		if (a == '000' && b == '010')	{ hexagrama = 8 }
+		if (a == '000' && b == '011')	{ hexagrama = 20}
+		if (a == '000' && b == '100')	{ hexagrama = 16}
+		if (a == '000' && b == '101')	{ hexagrama = 35}
+		if (a == '000' && b == '110')	{ hexagrama = 45}
+		if (a == '000' && b == '111')	{ hexagrama = 12}
+		
+		if (a == '001' && b == '000')	{ hexagrama = 15}
+		if (a == '001' && b == '001')	{ hexagrama = 52}
+		if (a == '001' && b == '010')	{ hexagrama = 39}
+		if (a == '001' && b == '011')	{ hexagrama = 53}
+		if (a == '001' && b == '100')	{ hexagrama = 62}
+		if (a == '001' && b == '101')	{ hexagrama = 56}
+		if (a == '001' && b == '110')	{ hexagrama = 31}
+		if (a == '001' && b == '111')	{ hexagrama = 33}
+		
+		if (a == '010' && b == '000')	{ hexagrama = 7 }
+		if (a == '010' && b == '001')	{ hexagrama = 4 }
+		if (a == '010' && b == '010')	{ hexagrama = 29}
+		if (a == '010' && b == '011')	{ hexagrama = 59}
+		if (a == '010' && b == '100')	{ hexagrama = 40}
+		if (a == '010' && b == '101')	{ hexagrama = 64}
+		if (a == '010' && b == '110')	{ hexagrama = 47}
+		if (a == '010' && b == '111')	{ hexagrama = 6 }
+		
+		if (a == '011' && b == '000')	{ hexagrama = 46}
+		if (a == '011' && b == '001')	{ hexagrama = 18}
+		if (a == '011' && b == '010')	{ hexagrama = 48}
+		if (a == '011' && b == '011')	{ hexagrama = 57}
+		if (a == '011' && b == '100')	{ hexagrama = 32}
+		if (a == '011' && b == '101')	{ hexagrama = 50}
+		if (a == '011' && b == '110')	{ hexagrama = 28}
+		if (a == '011' && b == '111')	{ hexagrama = 44}
+		
+		if (a == '100' && b == '000')	{ hexagrama = 24}
+		if (a == '100' && b == '001')	{ hexagrama = 27}
+		if (a == '100' && b == '010')	{ hexagrama = 3 }
+		if (a == '100' && b == '011')	{ hexagrama = 42}
+		if (a == '100' && b == '100')	{ hexagrama = 51}
+		if (a == '100' && b == '101')	{ hexagrama = 21}
+		if (a == '100' && b == '110')	{ hexagrama = 17}
+		if (a == '100' && b == '111')	{ hexagrama = 25}
+		
+		if (a == '101' && b == '000')	{ hexagrama = 36}
+		if (a == '101' && b == '001')	{ hexagrama = 22}
+		if (a == '101' && b == '010')	{ hexagrama = 63}
+		if (a == '101' && b == '011')	{ hexagrama = 37}
+		if (a == '101' && b == '100')	{ hexagrama = 55}
+		if (a == '101' && b == '101')	{ hexagrama = 30}
+		if (a == '101' && b == '110')	{ hexagrama = 49}
+		if (a == '101' && b == '111')	{ hexagrama = 13}
+		
+		if (a == '110' && b == '000')	{ hexagrama = 19}
+		if (a == '110' && b == '001')	{ hexagrama = 41}
+		if (a == '110' && b == '010')	{ hexagrama = 60}
+		if (a == '110' && b == '011')	{ hexagrama = 61}
+		if (a == '110' && b == '100')	{ hexagrama = 54}
+		if (a == '110' && b == '101')	{ hexagrama = 38}
+		if (a == '110' && b == '110')	{ hexagrama = 58}
+		if (a == '110' && b == '111')	{ hexagrama = 10}
+		
+		if (a == '111' && b == '000')	{ hexagrama = 11}
+		if (a == '111' && b == '001')	{ hexagrama = 26}
+		if (a == '111' && b == '010')	{ hexagrama = 5 }
+		if (a == '111' && b == '011')	{ hexagrama = 9 }
+		if (a == '111' && b == '100')	{ hexagrama = 34}
+		if (a == '111' && b == '101')	{ hexagrama = 14}
+		if (a == '111' && b == '110')	{ hexagrama = 43}
+		if (a == '111' && b == '111')	{ hexagrama = 1 }
+		
+	}
+		
+		
+		
+		
+	}); ///////////////////////////////////////////////////////////////
+	
+
+
+	</script>
+</head>
+<body>
+
+	<div id="info"><span id="infoH"></span> <a href="#" id="h1"></a><a href="#" id="h2"></a></div>
+
+	<div id="cont">
+		<div id="linia6" class="linia"></div>
+		<div id="linia5" class="linia"></div>
+		<div id="linia4" class="linia"></div>
+		<div id="linia3" class="linia"></div>
+		<div id="linia2" class="linia"></div>
+		<div id="linia1" class="linia"></div>
+	</div>
+	
+	<div id="cont2"></div>
+	
+	<div id="cont3"></div>
+
+	<div id="boto" onclick="linies()"><div id="clic">C O N S U L T A</div></button>
+
+
+
+
+<script>
+		
+
+
+</script>
+</body>
+</html>
