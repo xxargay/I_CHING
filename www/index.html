@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <head>
+	<title>I CHING</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no">
 	<script src="js/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="txt/estils.css">
+    <script src="js/jquery.nicescroll.min.js"></script>
 	<style>
 
 		*{margin:0 ; padding:0 ; box-sizing:border-box ; font-family:verdana ; }
 		html{width:100% ; height:100% ; }
-		body{width:100% ; height:100% ; margin:auto ; overflow:hidden ; background-color:#D7E9F4 ; font-size: 12px;}
+		body{width:100% ; height:100% ; margin:auto ; overflow:hidden ; background-color:#D7E9F4 ; font-size: 3vw ; color:#136666}
 
-		#info{position:absolute ; top:0 ; height:10% ; width:100% ;   cursor:pointer ; text-align:center  ; /*background-color:#C3D5E0*/ }
+		#info{position:absolute ; top:0 ; height:7% ; width:100% ;   cursor:pointer ; text-align:center  ; /*background-color:#C3D5E0*/ }
 		#boto{position:absolute ; bottom:0 ; height:10% ; width:100% ;  cursor:pointer ; text-align:center ; /*background-color:#C3D5E0*/ }
 		
-		#clic{height:100% ; width:33.33%; margin:auto ; padding-top:15px ; border-top-left-radius: 10px; border-top-right-radius: 10px; color:#588DAD ; background-color:#A3B5C0 ;  background: linear-gradient( #A3B5C0 , #D7E9F4);}
+		/*#clic{position:absolute ; bottom:0 ; left:50% ; height:80% ; width:33.33%; margin:auto ; margin-left: -16.6% ; padding-top:10px ; border-top-left-radius: 10px; border-top-right-radius: 10px; color:#588DAD ; background-color:#A3B5C0 ;  background: linear-gradient( #A3B5C0 , #D7E9F4);}*/
+		#clic {height:90% ; width:33.33%; margin:auto ; background-image: url(img/moneda.png) ;  background-position: center top ; background-size: contain ; background-repeat: no-repeat ; transition: all 1s;}
+		.clic2 {transform: rotateY(720deg);}
 		
-		#cont{position:absolute ; z-index:10 ; top:10% ; height:80% ; width:100% ; padding:4% ;  }		
-		#cont2{position:absolute ; z-index:10 ; top:10% ; height:80% ; width:100% ; padding:8% ; background-color:#D7E9F4 ; display:none; }
-		#cont3{position:absolute ; z-index:10 ; top:10% ; height:80% ; width:100% ; padding:8% ; background-color:#D7E9F4 ; display:none; }
+		#cont{position:absolute ; z-index:10 ; top:7% ; height:83% ; width:100% ; padding:4% ;  }		
+		#cont1{position:absolute ; z-index:10 ; top:7% ; height:80% ; width:100% ; padding:8% ; background-color:#D7E9F4 ; display:none; }
+		#cont2{position:absolute ; z-index:10 ; top:7% ; height:80% ; width:100% ; padding:8% ; background-color:#D7E9F4 ; display:none; }
 		
 		.linia{height:10% ; width:100% ; margin-top: 3% ;}
 
@@ -28,33 +31,53 @@
 		.l{width:40% ;height:100% ;}
 		.c{width:20% ;height:100% ;}
 		
-		h1 {color:#139DB4;font-size:14px;margin-bottom:16px;}
+		h1 {color:#139DB4 ; font-size:3.2vw ; margin-bottom:16px ;}
 
-		h2 {font-size:12px;}
+		h2 {font-size:2.8vw;}
 		
-		#infoH, #h1, #h2 {font-size:14px; font-size:3vw; color:#588DAD}
+		.solg, .mut {font-weight: bold ; color:#6395C0 ; display:block ;}
+		
+		#cont1l1, #cont1l2, #cont1l3, #cont1l4, #cont1l5, #cont1l6 {margin:10px 0 0 0;}
+		
+		#infoH, #h1, #h2 {font-size:3vw ; font-size:4.5vw; color:#588DAD}
 		
 		a {text-decoration: none ; color:#338DAD ; font-variant : bold ;}
+		
+		img {margin-top:0px;}
+		
+		.imgh {float:left; margin-right:12px;}
+		
+		#hexboto{font-size:8px;}
+		#hexboto img{margin-bottom:7px;}
+		
+		@media all and (max-width: 500px) {}
 
 	</style>
 	<script>
 
 	$(function() { //////////////////////////////////////////////////
 	
+	$("#clic").click(function() {
+		$("#clic").toggleClass("clic2", 4000, "easeInOutQuad");
+	});
+	
+	$("#cont1").niceScroll({cursorcolor:"#588DAD"});
+	$("#cont2").niceScroll({cursorcolor:"#588DAD"});
+	
 	
 	$("#h1").click(function(){
-		$("#cont2").toggle();
-		$("#cont3").hide();
+		$("#cont1").toggle();
+		$("#cont2").hide();
 	});
 	
 	$("#h2").click(function(){
-		$("#cont3").toggle();
-		$("#cont2").hide();
+		$("#cont2").toggle();
+		$("#cont1").hide();
 	});
 	
 	$("#infoH").click(function(){
+		$("#cont1").hide();
 		$("#cont2").hide();
-		$("#cont3").hide();
 	});
 	
 	
@@ -73,6 +96,11 @@
 	hexagrama = 0;
 	hexagrama2 = 0;
 	
+	linmut = [] ;
+	
+	inf = "" ;
+	sup = "" ;
+	
 	// tirem les monedes 6 cops
 	linies = function (){
 	
@@ -89,23 +117,58 @@
 			
 			// carreguem el contingut dels hexagrames
 
-			$("#cont2").load("txt/" + hexa1 + ".html");
+			$("#cont1t").load("hex/" + hexa1 + ".html h1");
+			$("#cont1h").load("hex/" + hexa1 + ".html h2");
+		
+			$("#cont1s").load("hex/" + hexa1 + ".html #solg");
+			/*
+			$("#cont1l" + "1").load("hex/" + hexa1 + ".html #mut1");
+			$("#cont1l" + "2").load("hex/" + hexa1 + ".html #mut2");
+			*/
+			
+			for(i in linmut){
+				
+					if(linmut[i] === 1){
+						a = parseInt(i)+1 ;
+						$("#cont1l" + a).load("hex/" + hexa1 + ".html #mut" + a);
+					}
+				
+			}
+						
 			
 			$("#h1").html("<a href='#'>" + hexa1 + "</a>");
 			$("#h2").html("");
 			
 			if(hexa1 !== hexa2){
-				$("#cont3").load("txt/" + hexa2 + ".html");
+				
+				$("#cont2t").load("hex/" + hexa2 + ".html h1");
+				$("#cont2h").load("hex/" + hexa2 + ".html h2");
+		
+				$("#cont2s").load("hex/" + hexa2 + ".html #solg");
 			
-				$("#h2").html(" | <a href='#'>" + hexa2 + "</a>");
-			}
-			
-			
-			
-			
-			
-			
+				$("#h2").html(" &nbsp;&nbsp;<span style='color:#DB5353;'>></span>&nbsp;&nbsp; <a href='#'>" + hexa2 + "</a>");
+			}			
+				
 		}	
+				
+		if( count > 5 ){	
+			setTimeout(function(){  
+				$("#clic").css({
+					"background-image" : "url()",
+					"transform" : "rotateY(0deg)"
+				});
+				$("#clic").html("<div id='hexboto' style='text-align:center;'><img src='img/" + sup + "'><br><img src='img/" + inf + "'></div>")
+			}, 1500);
+			
+			$("#clic").click(function(){
+				$("#cont1").hide();
+				$("#cont2").hide();
+			});
+			
+			$("#clic").dblclick(function(){
+				location.reload();
+			});
+		}
 		
 	}
 	
@@ -137,21 +200,25 @@
 				yy = m6 ;
 				hex.push(0);
 				hex2.push(1);
+				linmut.push(1);
 				break ;
 			case 7:
 				yy = t7 ;
 				hex.push(1);
 				hex2.push(1);
+				linmut.push(0);
 				break ;
 			case 8:
 				yy = t8 ;
 				hex.push(0);
 				hex2.push(0);
+				linmut.push(0);
 				break ;
 			case 9:
 				yy = m9 ;
 				hex.push(1);
 				hex2.push(0);
+				linmut.push(1);
 		}
 		
 		$("#" + lin).html(yy) ;
@@ -169,8 +236,65 @@
 		var b = tri1 ;
 		
 		hexa(a,b)
+
+		switch(a){
+			case "111":
+				inf = "hexa1.gif" ;
+				break ;
+			case "100":
+				inf = "hexa2.gif" ;
+				break ;
+			case "010":
+				inf = "hexa3.gif" ;
+				break ;
+			case "001":
+				inf = "hexa4.gif" ;
+				break ;
+			case "000":
+				inf = "hexa5.gif" ;
+				break ;
+			case "011":
+				inf = "hexa6.gif" ;
+				break ;
+			case "101":
+				inf = "hexa7.gif" ;
+				break ;
+			case "110":
+				inf = "hexa8.gif" ;
+				break ;		
+		}
+		
+		switch(b){
+			case "111":
+				sup = "hexa1.gif" ;
+				break ;
+			case "100":
+				sup = "hexa2.gif" ;
+				break ;
+			case "010":
+				sup = "hexa3.gif" ;
+				break ;
+			case "001":
+				sup = "hexa4.gif" ;
+				break ;
+			case "000":
+				sup = "hexa5.gif" ;
+				break ;
+			case "011":
+				sup = "hexa6.gif" ;
+				break ;
+			case "101":
+				sup = "hexa7.gif" ;
+				break ;
+			case "110":
+				sup = "hexa8.gif" ;
+				break ;		
+		}
+		
+		// alert(inf + " , " + sup)
+		
+		
 	}
-	
 	
 	
 	trigrames2 = function (){
@@ -284,19 +408,27 @@
 		<div id="linia1" class="linia"></div>
 	</div>
 	
-	<div id="cont2"></div>
+	<div id="cont1">
+    	<div id="cont1t"></div>
+        <div id="cont1h"></div>
+        <br><br>
+        <div id="cont1s"></div>
+        <div id="cont1l1"></div>
+        <div id="cont1l2"></div>
+        <div id="cont1l3"></div>
+        <div id="cont1l4"></div>
+        <div id="cont1l5"></div>
+        <div id="cont1l6"></div>
+    </div>
 	
-	<div id="cont3"></div>
+	<div id="cont2">
+        <div id="cont2t"></div>
+        <div id="cont2h"></div>
+        <br><br>
+        <div id="cont2s"></div>
+    </div>
 
-	<div id="boto" onclick="linies()"><div id="clic">C O N S U L T A</div></button>
-
-
-
-
-<script>
-		
-
-
-</script>
+	<div id="boto" onclick="linies()"><div id="clic"></div></div>
+    
 </body>
 </html>
